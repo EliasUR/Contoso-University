@@ -1,0 +1,60 @@
+﻿@model List<TrabajoFinal.Models.Instructor>
+
+@{
+    ViewBag.Title = "Instructors List";
+}
+
+<h1 class="text-center mb-5">Instructors List</h1>
+
+@using (Html.BeginForm("Search", "Instructors"))
+{
+    <div class="row mb-5">
+
+        <label for="Name" class="control-label col-1">Name:</label>
+        <input type="text" id="Name" name="Name" class="form-control col-6" placeholder="Ej: Antonio Juarez" />
+
+        <div class="form-group col-5 mb-5">
+            <input class="btn btn-outline-dark" type="submit" value="Buscar" />
+        </div>
+    </div>
+}
+
+<div class="row mt-5">
+    <table class="table table-sm table-bordered table-striped table-hover col-10">
+        <thead>
+            <tr class="table-secondary">
+                <th>Instructor Id</th>
+                <th>Instructor's Full Name</th>
+                <th>Hire Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@Html.DisplayFor(modelItem => item.HireDate)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-link" }) |
+                            @Html.Partial("_Delete", item)
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No Instructors available yet</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="col-2">
+        @Html.ActionLink("+", "Create", null, new { @class = "btn btn-outline-secondary text-center col-sm-3", style = "border-radius: 50%;" })
+    </div>
+</div>

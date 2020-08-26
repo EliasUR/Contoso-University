@@ -1,0 +1,77 @@
+﻿@model List<TrabajoFinal.Models.Course>
+
+@{
+    ViewBag.Title = "Courses List";
+}
+
+<h1 class="text-center mb-5">Courses List</h1>
+
+@using (Html.BeginForm("Search", "Courses"))
+{
+    <div class="row mb-2">
+        <div class="form-group col-3">
+            <label for="Department" class="control-label">Department:</label>
+            <select id="Department" name="Department" class="form-control">
+                <option value="0">All</option>
+                @foreach (var department in (List<TrabajoFinal.Models.Department>)ViewBag.Departments)
+                {
+                    <option value="@department.Id">@department.Title</option>
+                }
+            </select>
+        </div>
+        <div class="form-group col-9 row-cols-2">
+            <label for="Title" class="control-label">Title:</label>
+            <div>
+                <input type="text" id="Title" name="Title" class="form-control col-12" placeholder="Ej: Spanish" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group mb-5">
+        <input class="btn btn-outline-dark" type="submit" value="Buscar" />
+    </div>
+}
+
+<div class="row mt-5">
+    <table class="table table-sm table-bordered table-striped table-hover col-10">
+        <thead>
+            <tr class="table-secondary">
+                <th>Course ID</th>
+                <th>Title</th>
+                <th>Department</th>
+                <th>Capacity</th>
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Title</td>
+                    <td>@item.Department.Title</td>
+                    <td>@item.Capacity</td>
+                    <td>@item.Instructor.Name</td>
+                    <td>
+                        @Html.ActionLink("Details", "CourseStudents", new { id = item.Id }, new { @class = "btn btn-link" }) |
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-link" }) |
+                        @Html.Partial("_Delete", item)
+                    </td>
+                </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No Courses available yet</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="col-2">
+        @Html.ActionLink("+", "Create", null, new { @class = "btn btn-outline-secondary text-center col-sm-3", style = "border-radius: 50%;" })
+    </div>
+</div>

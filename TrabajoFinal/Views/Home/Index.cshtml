@@ -1,0 +1,19 @@
+﻿<div class="jumbotron">
+    <h1>Contoso University</h1>
+    <p class="lead">You can see the courses and enroll here:</p>
+    <p>@Html.ActionLink("Enrollments", "Index", "Enrollments", new { area = "" }, new { @class = "btn btn-primary btn-lg" })</p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Watch Instructors</h2>
+        <p>@Html.ActionLink("Instructors", "Index", "Instructors", new { area = "" }, new { @class = "btn btn-success" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Look at Departments</h2>
+        @Html.ActionLink("Departments", "Index", "Departments", new { area = "" }, new { @class = "btn btn-success" })
+    </div>
+    <div class="col-md-4">
+        <h2>Watch Courses</h2>
+        <p>@Html.ActionLink("Courses", "Index", "Courses", new { area = "" }, new { @class = "btn btn-success" })</p>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+﻿@model TrabajoFinal.Models.Course
+
+@{
+    ViewBag.Title = "Course Students";
+    int remainingCapacity = Model.Capacity - Model.Students.Count();
+}
+<div class="row">
+    <h2 class="col-6 text-right">Course Students</h2>
+</div>
+<hr />
+
+<div>
+    <div class="form-group row">
+        <label for="Id" class="control-label text-center col-3">Course ID</label>
+        <div class="col-9">
+            @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="Department" class="control-label text-center col-3">Department</label>
+        <div class="col-9">
+            <select id="Department" class="form-control" readonly>
+                <option>@Model.Department.Title</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label text-center col-3" })
+        <div class="col-9">
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="Capacity" class="control-label text-center col-3">Remaining Capacity</label>
+        <div class="col-9">
+            <input type="number" id="Capacity" value="@remainingCapacity" class="form-control" readonly/>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <table class="table table-sm table-bordered table-striped table-hover col-12">
+        <thead>
+            <tr class="table-secondary">
+                <th>Student ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Students.Count > 0)
+            {
+                foreach (var item in Model.Students)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.FullName</td>
+                        <td>@item.Email</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center">no students associated to this course yet</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="col-7">
+        @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-outline-dark float-right w-25"})
+    </div>
+</div>

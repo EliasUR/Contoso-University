@@ -1,0 +1,97 @@
+﻿@model TrabajoFinal.Models.Course
+
+@{
+    ViewBag.Title = "Course Edition";
+}
+
+<h2>Course Edition</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group row">
+            <label for="Id" class="control-label text-center col-3">Department</label>
+            <div class="col-9">
+                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="Department" class="control-label text-center col-3">Department:</label>
+            <div class="col-9">
+                <select id="Department" name="DepartmentId" class="form-control" readonly>
+                    @foreach (var department in (List<TrabajoFinal.Models.Department>)ViewBag.Departments)
+                    {
+                        if(department.Id == Model.DepartmentId)
+                        {
+                            <option value="@department.Id" selected>@department.Title</option>
+                        }
+                        else 
+                        {
+                            <option value="@department.Id" disabled>@department.Title</option>
+                        }
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label text-center col-3" })
+            <div class="col-9">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Capacity, htmlAttributes: new { @class = "control-label text-center col-3" })
+            <div class="col-9">
+                @Html.EditorFor(model => model.Capacity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Capacity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="Instructor" class="control-label text-center col-3">Instructor</label>
+            <div class="col-9">
+                <select id="Instructor" name="InstructorId" class="form-control">
+                    @foreach (var instructor in (List<TrabajoFinal.Models.Instructor>)ViewBag.Instructors)
+                    {
+                        if (Model.Students.Count == 0)
+                        {
+                            <option value="@instructor.Id">@instructor.Name</option>
+                        }
+                        else
+                        {
+                            if (instructor.Id == Model.InstructorId)
+                            {
+                                <option value="@instructor.Id" selected>@instructor.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@instructor.Id" disabled>@instructor.Name</option>
+                            }
+                        }
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.InstructorId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-5">
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-outline-danger float-right" })
+                <input type="submit" value="Save" class="btn btn-outline-success float-right mr-4" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

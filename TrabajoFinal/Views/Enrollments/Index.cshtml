@@ -1,0 +1,100 @@
+﻿@model List<TrabajoFinal.Models.Course>
+
+@{
+    ViewBag.Title = "Course Enrollment";
+}
+
+<h1 class="text-center mb-5">Course Enrollment</h1>
+@if (ViewBag.Enrolled != null && ViewBag.Enrolled)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>You have been enrolled!</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (ViewBag.Enrolled != null && !ViewBag.Enrolled)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>You cannot enroll this course because you are already in it</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@using (Html.BeginForm("Search", "Enrollments"))
+{
+    <div class="row mb-2">
+        <div class="form-group col-3">
+            <label for="Department" class="control-label">Department:</label>
+            <select id="Department" name="Department" class="form-control">
+                <option value="0">All</option>
+                @foreach (var department in (List<TrabajoFinal.Models.Department>)ViewBag.Departments)
+                {
+                    <option value="@department.Id">@department.Title</option>
+                }
+            </select>
+        </div>
+        <div class="form-group col-9 row-cols-2">
+            <label for="Title" class="control-label">Title:</label>
+            <div>
+                <input type="text" id="Title" name="Title" class="form-control col-12" placeholder="Ej: Spanish" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group mb-5">
+        <input class="btn btn-outline-dark" type="submit" value="Buscar" />
+    </div>
+}
+
+
+<table class="table table-sm table-bordered table-striped table-hover mt-5">
+    <thead>
+        <tr class="table-secondary">
+            <th>Course ID</th>
+            <th>Title</th>
+            <th>Aviable Seats</th>
+            <th>Department</th>
+            <th>Instructor</th>
+            <th>Enroll</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                int aviableSeats = item.Capacity - item.Students.Count();
+
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Title</td>
+                    <td>@aviableSeats/@item.Capacity</td>
+                    <td>@Html.DisplayFor(modelItem => item.Department.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Instructor.Name)</td>
+                    @if(aviableSeats > 0)
+                    {
+                    <td>
+                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-@item.Id">Enroll</button>
+                        @Html.Partial("_Enroll", item)
+                    </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <button type="button" class="btn btn-link text-secondary" disable>Enroll</button>
+                        </td>
+                    }
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">No Courses available yet</td>
+            </tr>
+        }
+    </tbody>
+</table>
